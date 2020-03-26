@@ -1,11 +1,12 @@
 # Import libraries
 from lib.navigation.gnss import satpos
 from lib.navigation.inertial import Rz
+from lib.navigation.constants import c, OMEGADOTe
 from numpy import array
 from numpy.linalg import norm
 
 
-# Receiver position [m]
+# Approximate receiver position [m]
 Xr = array([[3172870.7170],
             [604208.2810],
             [5481574.2300]])
@@ -29,7 +30,7 @@ iDOT = -3.500145795122e-10        # [rad/s]
 OMEGA0 = -1.328259931335e+00      # [rad]
 OMEGADOT = -8.668218208939e-09    # [rad/s]
 
-# Satellite ECEF position @ 02:15:34 (meter)
+# Satellite ECEF position @ 02:15:34 [m]
 Xs0 = satpos(ttr, toe, ROOTa, DELTAn, M0, e, omega, Cus, Cuc, Crs, Crc, Cis, Cic, i0, iDOT, OMEGA0, OMEGADOT)
 print(Xs0)
 
@@ -37,14 +38,21 @@ print(Xs0)
 sd_new = norm(Xs0 - Xr)/c
 sd = 0
 
-# Iterating signal travel time due to earth rotation
+# Estimate signal travel time due to earth rotation
 epsilon = 1e-10
+Xs = None
 while abs(sd_new - sd) > epsilon:
-    ds = sd_new
+    sd = sd_new
     Xs = Rz(-OMEGADOTe*sd)@Xs0
 
-%Compute
-improved
-estimate
-sd = norm(Xs - Xr(1:3))/c;
-end
+    # Compute delay estimate
+    sd_new = norm(Xs - Xr)/c
+
+# Estimate of signal delay [ms]
+print(norm(Xs-Xr)/c*1e3)
+
+# Corrected satellite ECEF position @ 02:15:34 [m]
+print(Xs)
+
+# Change in satellite position due to earth rotation [m]
+print(norm(Xs-Xs0))
