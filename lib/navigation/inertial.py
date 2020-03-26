@@ -47,6 +47,7 @@ def Rz(rz):
 
 # Rotate from e-frame to g-frame (ned)
 def Ce_g(lat, lon):
+
     return array([[-sin(lat)*cos(lon), -sin(lat)*sin(lon), cos(lat)],
                   [-sin(lon), cos(lon), 0],
                   [-cos(lat)*cos(lon), -cos(lat)*sin(lon), -sin(lat)]])

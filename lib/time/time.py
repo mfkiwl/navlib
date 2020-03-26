@@ -1,12 +1,12 @@
 # Time from reference epoch
-def dt(t, tref):
+def dt(t, t0):
 
-    dt = t-tref
+    t = t - t0
 
     # Correction for beginning or end of week crossovers
-    if dt > 302400:
-        dt = dt - 604800
-    elif dt < -302400:
-        dt = dt + 604800
+    if t > 302400:
+        t = t - 604800
+    elif t < -302400:
+        t = t + 604800
 
-    return dt
+    return t

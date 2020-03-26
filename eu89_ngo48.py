@@ -4,6 +4,7 @@ from lib.geodesy.geodesy import geod2ECEF, ECEF2geod, TMgrid2geod, geod2TMgrid
 from lib.navigation.inertial import Rx, Ry, Rz
 from numpy import array
 
+
 # Given coordinates EU89
 N = 6615663.888
 E = 600113.253
@@ -50,7 +51,7 @@ b = a*(1 - f)
 
 # TM projection
 lat0 = deg2rad(58)
-lon0 = dms2rad((10, 43, 22.5)) # axis 3
+lon0 = dms2rad((10, 43, 22.5))  # axis 3
 scale = 1
 fnorth = 0
 feast = 0

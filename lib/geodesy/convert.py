@@ -2,7 +2,7 @@
 from scipy import pi, arctan2, fmod, fix
 
 
-# Modified atanc (returns quadrant independent angle, e.g. azimuth)
+# Modified arctanc (returns quadrant independent angle, e.g. azimuth)
 def arctanc(y, x):
     z = arctan2(y, x)
 

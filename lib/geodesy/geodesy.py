@@ -31,7 +31,7 @@ def Rm(a, b, lat):
     return R
 
 
-# Radius of curvature for given azimuth (Eulers equation)
+# Radius of curvature for given azimuth (Euler's equation)
 def Ra(a, b, lat, az):
     M = Mrad(a, b, lat)
     N = Nrad(a, b, lat)
@@ -47,8 +47,8 @@ def Marc(a, b, lat):
     b0 = a*(1 - 1/2*f + 1/16*f**2 + 1/32*f**3)
 
     B = b0*(lat - (3/4*f + 3/8*f**2 + 15/128*f**3)*sin(2*lat)
-                + (15/64*f**2 + 15/64*f**3)*sin(4*lat)
-                - 35/384*f**3*sin(6*lat))
+            + (15/64*f**2 + 15/64*f**3)*sin(4*lat)
+            - 35/384*f**3*sin(6*lat))
 
     return B
 
@@ -61,8 +61,8 @@ def footlat(a, b, x, lat0):
     B = Marc(a, b, lat0) + x
 
     latf = B/b0 + (3/4*f + 3/8*f**2 + 21/256*f**3)*sin(2*B/b0) \
-                + (21/64*f**2 + 21/64*f**3)*sin(4*B/b0) \
-                + 151/768*f**3*sin(6*B/b0)
+           + (21/64*f**2 + 21/64*f**3)*sin(4*B/b0) \
+           + 151/768*f**3*sin(6*B/b0)
 
     return latf
 
@@ -99,11 +99,7 @@ def geod2ECEF(a, b, lat, lon, h):
 
 # Convert ECEF coordinates to geodetic coordinates (iteration)
 def ECEF2geod(a, b, P):
-    epsilon = 1e-10
-    lat = 0
-
     N = None
-
     X = P[0, 0]
     Y = P[1, 0]
     Z = P[2, 0]
@@ -112,6 +108,9 @@ def ECEF2geod(a, b, P):
 
     p = sqrt(X**2 + Y**2)
     lat_new = arctan(Z/p)
+
+    epsilon = 1e-10
+    lat = 0
 
     while abs(lat_new - lat) > epsilon:
         lat = lat_new
@@ -137,7 +136,7 @@ def ECEF2geodv(a, b, P):
     r = (p + q - e2**2)/6
     s = e2**2*(p*q)/(4*r**3)
     t = (1 + s + sqrt(s*(2 + s)))**(1/3)
-    u = r * (1 + t + 1/t)
+    u = r*(1 + t + 1/t)
     v = sqrt(u**2 + e2**2*q)
     w = e2*(u + v - q)/(2*v)
     k = sqrt(u + v + w**2) - w
@@ -166,7 +165,8 @@ def geod1(a, b, lat1, lon1, az1, d):
     d1 = b0*(sigma1 - H*sin(2*sigma1) - H**2/4*sin(4*sigma1) - H**3/6*sin(6*sigma1))
     d2 = d1 + d
 
-    sigma2 = d2/b0 + (H - 3/4*H**3)*sin(2*d2/b0) + 5/4*H**2*sin(4*d2/b0) + 29/12*H**3*sin(6*d2/b0)
+    sigma2 = d2/b0 + (H - 3/4*H**3)*sin(2*d2/b0) + 5/4*H**2*sin(
+        4*d2/b0) + 29/12*H**3*sin(6*d2/b0)
     sigma = sigma2 - sigma1
 
     X = cos(beta1)*cos(sigma) - sin(beta1)*sin(sigma)*cos(az1)
@@ -178,7 +178,7 @@ def geod1(a, b, lat1, lon1, az1, d):
 
     K = (f + f**2)/4*cos(az0)**2 - f**2/4*cos(az0)**4
     dlon = dlon - f*sin(az0)*((1 - K - K**2)*sigma + K*sin(sigma)*cos(sigma1 + sigma2)
-                                 + K**2*sin(sigma)*cos(sigma)*cos(2*(sigma1 + sigma2)))
+                              + K**2*sin(sigma)*cos(sigma)*cos(2*(sigma1 + sigma2)))
 
     lat2 = arctan(a/b*tan(beta2))
     lon2 = lon1 + dlon
@@ -194,9 +194,6 @@ def geod1(a, b, lat1, lon1, az1, d):
 
 # Geodetic indirect problem
 def geod2(a, b, lat1, lon1, lat2, lon2):
-    epsilon = 1e-10
-    dlon_old = -1
-
     az0 = None
     az1 = None
     sigma = None
@@ -209,15 +206,16 @@ def geod2(a, b, lat1, lon1, lat2, lon2):
     beta1 = arctan(b/a*tan(lat1))
     beta2 = arctan(b/a*tan(lat2))
 
-    dlon = lon2 - lon1
-    dlon_new = dlon
+    epsilon = 1e-10
+    dlon_new = lon2 - lon1
+    dlon = 0
 
-    while abs(dlon_new - dlon_old) > epsilon:
-        dlon_old = dlon_new
+    while abs(dlon_new - dlon) > epsilon:
+        dlon = dlon_new
 
-        X = cos(beta1)*sin(beta2) - sin(beta1)*cos(beta2)*cos(dlon_old)
-        Y = cos(beta2)*sin(dlon_old)
-        Z = sin(beta1)*sin(beta2) + cos(beta1)*cos(beta2)*cos(dlon_old)
+        X = cos(beta1)*sin(beta2) - sin(beta1)*cos(beta2)*cos(dlon)
+        Y = cos(beta2)*sin(dlon)
+        Z = sin(beta1)*sin(beta2) + cos(beta1)*cos(beta2)*cos(dlon)
 
         sigma = arctan(sqrt(X**2 + Y**2)/Z)
         az1 = arctanc(Y, X)
@@ -229,7 +227,7 @@ def geod2(a, b, lat1, lon1, lat2, lon2):
         K = (f + f**2)/4*cos(az0)**2 - f**2/4*cos(az0)**4
 
         dlon_new = dlon + f*sin(az0)*((1 - K - K**2)*sigma + K*sin(sigma)*cos(sigma1 + sigma2)
-                                         + K**2*sin(sigma)*cos(sigma)*cos(2*(sigma1 + sigma2)))
+                                      + K**2*sin(sigma)*cos(sigma)*cos(2*(sigma1 + sigma2)))
 
     dlon = dlon_new
     az2 = arctanc(cos(beta1)*sin(dlon), (cos(beta1)*sin(beta2)*cos(dlon) - sin(beta1)*cos(beta2)))
@@ -241,11 +239,11 @@ def geod2(a, b, lat1, lon1, lat2, lon2):
 
     g = e2m*cos(az0)**2
     H = 1/8*g - 1/16*g**2 + 37/1024*g**3
-    b0 = b * (1 + 1/4*g - 3/64*g**2 + 5/256*g**3)
+    b0 = b*(1 + 1/4*g - 3/64*g**2 + 5/256*g**3)
 
     d = b0*(sigma - 2*H*sin(sigma)*cos(sigma1 + sigma2)
-                  - H**2/2*sin(2*sigma)*cos(2*(sigma1 + sigma2))
-                  - H**3/3*sin(3*sigma)*cos(3*(sigma1 + sigma2)))
+            - H**2/2*sin(2*sigma)*cos(2*(sigma1 + sigma2))
+            - H**3/3*sin(3*sigma)*cos(3*(sigma1 + sigma2)))
 
     return az1, az2, d
 
@@ -259,8 +257,8 @@ def geod2TMgrid(a, b, lat, lon, lat0, lon0, scale, fnorth, feast):
     l = lon - lon0
 
     x = B + 1/2*l**2*N*sin(lat)*cos(lat) \
-          + 1/24*l**4*N*sin(lat)*cos(lat)**3*(5 - tan(lat)**2 + 9*eps2 + 4*eps2**2) \
-          + 1/720*l**6*N*sin(lat)*cos(lat)**5*(61-58*tan(lat)**2 + tan(lat)**4)
+        + 1/24*l**4*N*sin(lat)*cos(lat)**3*(5 - tan(lat)**2 + 9*eps2 + 4*eps2**2) \
+        + 1/720*l**6*N*sin(lat)*cos(lat)**5*(61 - 58*tan(lat)**2 + tan(lat)**4)
 
     y = l*N*cos(lat) + 1/6*l**3*N*cos(lat)**3*(1 - tan(lat)**2 + eps2) \
         + 1/120*l**5*N*cos(lat)**5*(5 - 18*tan(lat)**2 + tan(lat)**4)
@@ -274,7 +272,7 @@ def geod2TMgrid(a, b, lat, lon, lat0, lon0, scale, fnorth, feast):
     return north, east
 
 
-# TMgrid to ellipsoid
+# Convert Transversal Mercator coordinates to geodetic coordinates
 def TMgrid2geod(a, b, north, east, lat0, lon0, scale, fnorth, feast):
     north = north - fnorth
     east = east - feast
@@ -291,8 +289,8 @@ def TMgrid2geod(a, b, north, east, lat0, lon0, scale, fnorth, feast):
     eps2f = e2/(1 - e2)*cos(latf)**2
 
     lat = latf - 1/2*y**2*tan(latf)/(Mf*Nf) \
-               + 1/24*y**4*tan(latf)/(Mf*Nf**3)*(5 + 3*tan(latf)**2 + eps2f - 9*eps2f*tan(latf)**2 - 4*eps2f**2) \
-               - 1/720*y**6*tan(latf)/(Mf*Nf**5)*(61 + 90*tan(latf)**2 + 45*tan(latf)**4)
+          + 1/24*y**4*tan(latf)/(Mf*Nf**3)*(5 + 3*tan(latf)**2 + eps2f - 9*eps2f*tan(latf)**2 - 4*eps2f**2) \
+          - 1/720*y**6*tan(latf)/(Mf*Nf**5)*(61 + 90*tan(latf)**2 + 45*tan(latf)**4)
 
     l = y/(Nf*cos(latf)) \
         - 1/6*y**3/(Nf**3*cos(latf))*(1 + 2*tan(latf)**2 + eps2f) \
