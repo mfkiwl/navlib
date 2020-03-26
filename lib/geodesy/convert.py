@@ -6,7 +6,7 @@ from scipy import pi, arctan2, fmod, fix
 def arctanc(y, x):
     z = arctan2(y, x)
 
-    return fmod(2*pi+z, 2*pi)
+    return fmod(2*pi + z, 2*pi)
 
 
 # Convert from degree to radian
@@ -45,7 +45,7 @@ def dms2deg(dms):
     m = dms[1]
     s = dms[2]
 
-    deg = abs(d)+m/60+s/3600
+    deg = abs(d) + m/60 + s/3600
 
     return deg
 

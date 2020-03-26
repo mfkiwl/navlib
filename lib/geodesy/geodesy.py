@@ -8,7 +8,7 @@ from scipy import pi, sin, arcsin, cos, tan, arctan, sqrt
 # Meridional radius of curvature
 def Mrad(a, b, lat):
     e2 = (a**2 - b**2)/a**2
-    M = a*(1 - e2)/(1 - e2*sin(lat)**2)**(3 / 2)
+    M = a*(1 - e2)/(1 - e2*sin(lat)**2)**(3/2)
 
     return M
 
@@ -108,7 +108,7 @@ def ECEF2geod(a, b, P):
     Y = P[1, 0]
     Z = P[2, 0]
 
-    e2 = (a**2-b**2)/a**2
+    e2 = (a**2 - b**2)/a**2
 
     p = sqrt(X**2 + Y**2)
     lat_new = arctan(Z/p)
@@ -131,7 +131,7 @@ def ECEF2geodv(a, b, P):
     Y = P[1, 0]
     Z = P[2, 0]
 
-    e2 = (a**2 - b**2)/a** 2
+    e2 = (a**2 - b**2)/a**2
     p = (X**2 + Y**2)/a**2
     q = (1 - e2)/a**2*Z**2
     r = (p + q - e2**2)/6
