@@ -1,3 +1,3 @@
 # navlib
 
-Navlib is a library of algorithms for conversion of geodetic coordinates and projections, navigation calculations and GNSS processing.
+Navlib is a library of algorithms for geodetic coordinate systems/projections, navigation calculations and GNSS processing.
