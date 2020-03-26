@@ -4,6 +4,12 @@ from lib.geodesy.geodesy import geod2ECEF, ECEF2geod, TMgrid2geod, geod2TMgrid
 from lib.navigation.inertial import Rx, Ry, Rz
 from numpy import array
 
+# Given coordinates EU89
+N = 6615663.888
+E = 600113.253
+h = 156.228
+print(N, E, h)
+
 # GRS80 ellipsoid
 a = 6378137
 f = 1 / 298.257222101
@@ -15,12 +21,6 @@ lon0 = deg2rad(9)  # zone 32V
 scale = 0.9996
 fnorth = 0
 feast = 500000
-
-# Given coordinates EU89
-N = 6615663.888
-E = 600113.253
-h = 156.228
-print(N, E, h)
 
 # Convert from projection to geodetic
 lat, lon = TMgrid2geod(a, b, N, E, lat0, lon0, scale, fnorth, feast)
