@@ -1,6 +1,6 @@
 # Import libraries
-from lib.time.time import dt
-from lib.navigation.constants import GM, OMEGADOTe
+from lib.timelib.corr import dt
+from lib.navlib.constants import GM, OMEGADOTe
 from numpy import array
 from scipy import sqrt, sin, cos, arctan2
 

@@ -1,6 +1,6 @@
 # Import libraries
-from lib.geodesy.convert import arctanc
-from lib.navigation.inertial import Ce_g
+from lib.geodlib.convert import arctanc
+from lib.navlib.inertial import Ce_g
 from numpy import array
 from scipy import pi, sin, arcsin, cos, tan, arctan, sqrt
 

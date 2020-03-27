@@ -1,7 +1,7 @@
 # Import libraries
-from lib.navigation.gnss import satpos
-from lib.navigation.inertial import Rz
-from lib.navigation.constants import c, OMEGADOTe
+from lib.navlib.gnss import satpos
+from lib.navlib.inertial import Rz
+from lib.navlib.constants import c, OMEGADOTe
 from numpy import array
 from numpy.linalg import norm
 
@@ -38,7 +38,7 @@ print(Xs0)
 sd_new = norm(Xs0 - Xr)/c
 sd = 0
 
-# Estimate signal travel time due to earth rotation
+# Estimate signal travel timelib due to earth rotation
 epsilon = 1e-10
 Xs = None
 while abs(sd_new - sd) > epsilon:
