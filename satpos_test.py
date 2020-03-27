@@ -38,7 +38,7 @@ print(Xs0)
 sd_new = norm(Xs0 - Xr)/c
 sd = 0
 
-# Estimate signal travel timelib due to earth rotation
+# Estimate signal travel time due to earth rotation
 epsilon = 1e-10
 Xs = None
 while abs(sd_new - sd) > epsilon:
