@@ -53,6 +53,20 @@ def Ce_g(lat, lon):
                   [-cos(lat)*cos(lon), -cos(lat)*sin(lon), -sin(lat)]])
 
 
+# Coordinate axis definitions
+ned2enu = array([[0, 1, 0],
+                 [1, 0, 0],
+                 [0, 0, -1]])
+
+nwu2enu = array([[0, -1, 0],
+                 [1, 0, 0],
+                 [0, 0, 1]])
+
+nwu2ned = array([[1, 0, 0],
+                 [0, -1, 0],
+                 [0, 0, -1]])
+
+
 # Rotate from b-frame to g-frame
 def Cb_g(roll, pitch, yaw):
 
