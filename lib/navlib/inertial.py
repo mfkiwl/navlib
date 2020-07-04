@@ -1,6 +1,6 @@
 # Import libraries
 from numpy import array
-from scipy import sin, cos, sqrt
+from scipy import sin, cos, sqrt, arctan2
 
 
 # Quaternion
@@ -53,6 +53,20 @@ def Ce_g(lat, lon):
                   [-cos(lat)*cos(lon), -cos(lat)*sin(lon), -sin(lat)]])
 
 
+# Rotate from b-frame to g-frame
+def Cb_g(roll, pitch, yaw):
+
+    return Rz(yaw)@Ry(pitch)@Rx(roll)
+
+
+# Estimate roll and pitch from accelerometer (ned)
+def align(ax, ay, az):
+    roll = arctan2(ay, az)
+    pitch = arctan2(ax, az)
+
+    return roll, pitch
+
+
 # Coordinate axis definitions
 ned2enu = array([[0, 1, 0],
                  [1, 0, 0],
@@ -65,17 +79,3 @@ nwu2enu = array([[0, -1, 0],
 nwu2ned = array([[1, 0, 0],
                  [0, -1, 0],
                  [0, 0, -1]])
-
-
-# Rotate from b-frame to g-frame
-def Cb_g(roll, pitch, yaw):
-
-    return Rz(yaw)@Ry(pitch)@Rx(roll)
-
-
-# Estimate roll and pitch from accelerometer
-def align(ax, ay, az):
-    roll = atan2(ay, az)
-    pitch = atan2(ax, az)
-
-    return roll, pitch
