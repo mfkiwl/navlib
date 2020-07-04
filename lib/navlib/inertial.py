@@ -71,3 +71,11 @@ nwu2ned = array([[1, 0, 0],
 def Cb_g(roll, pitch, yaw):
 
     return Rz(yaw)@Ry(pitch)@Rx(roll)
+
+
+# Estimate roll and pitch from accelerometer
+def align(ax, ay, az):
+    roll = atan2(ay, az)
+    pitch = atan2(ax, az)
+
+    return roll, pitch
