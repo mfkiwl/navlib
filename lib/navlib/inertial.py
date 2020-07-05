@@ -59,7 +59,7 @@ def Cb_g(roll, pitch, yaw):
     return Rz(yaw)@Ry(pitch)@Rx(roll)
 
 
-# Estimate roll and pitch from accelerometer (ned)
+# Estimate roll and pitch from acceleration (ned)
 def align(ax, ay, az):
     roll = arctan2(ay, az)
     pitch = arctan2(ax, az)
