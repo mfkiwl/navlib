@@ -1,6 +1,6 @@
 # Import libraries
 from numpy import array
-from scipy import sin, cos, sqrt, arctan2
+from scipy import sin, cos, sqrt, arctan
 
 
 # Quaternion
@@ -61,8 +61,8 @@ def Cb_g(roll, pitch, yaw):
 
 # Estimate roll and pitch from acceleration (ned)
 def align(ax, ay, az):
-    roll = arctan2(ay, az)
-    pitch = arctan2(ax, az)
+    roll = arctan(ay/az)
+    pitch = arctan(ax/az)
 
     return roll, pitch
 
