@@ -1,3 +1,2 @@
-.idea/
-lib/navlib/__pycache__/
-lib/timelib/__pycache__/
+**.idea/
+**__pycache__/
