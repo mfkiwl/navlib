@@ -1,8 +1,7 @@
 # Import libraries
 from lib.timelib.corr import dt
 from lib.navlib.constants import GM, OMEGADOTe
-from numpy import array
-from scipy import sqrt, sin, cos, arctan2
+from numpy import array, sqrt, sin, cos, arctan2
 
 
 # Satellite ECEF position

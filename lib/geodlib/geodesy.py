@@ -1,15 +1,13 @@
 # Import libraries
 from lib.geodlib.convert import arctanc
 from lib.navlib.inertial import Ce_g
-from numpy import array
-from scipy import pi, sin, arcsin, cos, tan, arctan, sqrt
+from numpy import array, pi, sin, arcsin, cos, tan, arctan, sqrt
 
 
 # Meridional radius of curvature
 def Mrad(a, b, lat):
     e2 = (a**2 - b**2)/a**2
     M = a*(1 - e2)/(1 - e2*sin(lat)**2)**(3/2)
-
     return M
 
 
@@ -17,7 +15,6 @@ def Mrad(a, b, lat):
 def Nrad(a, b, lat):
     e2 = (a**2 - b**2)/a**2
     N = a/(1 - e2*sin(lat)**2)**(1/2)
-
     return N
 
 
@@ -27,7 +24,6 @@ def Rm(a, b, lat):
     N = Nrad(a, b, lat)
 
     R = sqrt(M*N)
-
     return R
 
 
@@ -37,7 +33,6 @@ def Ra(a, b, lat, az):
     N = Nrad(a, b, lat)
 
     R = M*N/(M*sin(az)**2 + N*cos(az)**2)
-
     return R
 
 
@@ -49,7 +44,6 @@ def Marc(a, b, lat):
     B = b0*(lat - (3/4*f + 3/8*f**2 + 15/128*f**3)*sin(2*lat)
             + (15/64*f**2 + 15/64*f**3)*sin(4*lat)
             - 35/384*f**3*sin(6*lat))
-
     return B
 
 
@@ -63,7 +57,6 @@ def footlat(a, b, x, lat0):
     latf = B/b0 + (3/4*f + 3/8*f**2 + 21/256*f**3)*sin(2*B/b0) \
            + (21/64*f**2 + 21/64*f**3)*sin(4*B/b0) \
            + 151/768*f**3*sin(6*B/b0)
-
     return latf
 
 
@@ -75,14 +68,12 @@ def ECEF2enu(lat0, lon0, dP):
     dP[0] = dP0[1]
     dP[1] = dP0[0]
     dP[2] = -dP0[2]
-
     return dP
 
 
 # Convert from ECEF coordinates to ned coordinates
 def ECEF2ned(lat0, lon0, dP):
     dP = Ce_g(lat0, lon0)@dP
-
     return dP
 
 
@@ -93,7 +84,6 @@ def geod2ECEF(a, b, lat, lon, h):
     P = array([[(N + h)*cos(lat)*cos(lon)],
                [(N + h)*cos(lat)*sin(lon)],
                [((b**2/a**2)*N + h)*sin(lat)]])
-
     return P
 
 

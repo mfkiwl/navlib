@@ -1,11 +1,10 @@
 # Import libraries
-from scipy import pi, arctan2, fmod, fix
+from numpy import pi, arctan2, fmod, fix
 
 
 # Modified arctanc (returns quadrant independent angle, e.g. azimuth)
 def arctanc(y, x):
     z = arctan2(y, x)
-
     return fmod(2*pi + z, 2*pi)
 
 
@@ -46,7 +45,6 @@ def dms2deg(dms):
     s = dms[2]
 
     deg = abs(d) + m/60 + s/3600
-
     return deg
 
 
@@ -59,7 +57,6 @@ def deg2dms(deg):
     frac = abs(dmin - int(dmin))
     m = fix(dmin)
     s = frac*60
-
     return d, m, s
 
 
@@ -67,7 +64,6 @@ def deg2dms(deg):
 def dms2rad(dms):
     deg = dms2deg(dms)
     rad = deg2rad(deg)
-
     return rad
 
 
@@ -75,5 +71,4 @@ def dms2rad(dms):
 def rad2dms(rad):
     deg = rad2deg(rad)
     dms = deg2dms(deg)
-
     return dms
