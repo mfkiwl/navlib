@@ -1,7 +1,7 @@
 # Import libraries
 from lib.geodlib.convert import deg2rad, rad2dms, dms2rad
 from lib.geodlib.geodesy import geod2ECEF, ECEF2geod, TMgrid2geod, geod2TMgrid
-from lib.navlib.inertial import Rx, Ry, Rz
+from lib.navlib.rotation import Rx, Ry, Rz
 from numpy import array
 
 

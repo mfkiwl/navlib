@@ -1,6 +1,6 @@
 # Import libraries
 from lib.geodlib.convert import arctanc
-from lib.navlib.inertial import Ce_g
+from lib.navlib.rotation import Ce_g
 from numpy import array, pi, sin, arcsin, cos, tan, arctan, sqrt
 
 

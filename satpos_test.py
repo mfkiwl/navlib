@@ -1,6 +1,6 @@
 # Import libraries
 from lib.navlib.gnss import satpos
-from lib.navlib.inertial import Rz
+from lib.navlib.rotation import Rz
 from lib.navlib.constants import c, OMEGADOTe
 from numpy import array
 from numpy.linalg import norm
