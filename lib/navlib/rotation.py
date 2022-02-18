@@ -1,5 +1,5 @@
 # Import libraries
-from numpy import array, eye, vstack, sin, cos, sqrt, arctan2
+from numpy import array, eye, vstack, sin, cos, sqrt, arcsin, arctan2
 from numpy.linalg import norm
 
 
