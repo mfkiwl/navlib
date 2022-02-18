@@ -25,20 +25,37 @@ def Rz(rz):
                   [0,        0,       1]])
 
 
-# Rotation matrix to Euler angles
-# R = Rz(yaw)@Ry(pitch)@R(roll)
-# Note: singular for pitch = 0 (Gimbal lock)
-# DCM2Euler
-def DCM2Euler(C):
+# Rotation matrix (DCM) to Euler angles
+
+# DCM2euler
+def DCM2euler(C):
     roll = arctan2(C[2, 1], C[2, 2])
     pitch = arctan2(-C[2, 0], sqrt(C[2, 1]**2 + C[2, 2]**2))
     yaw = arctan2(C[1, 0], C[0, 0])
     return roll, pitch, yaw
 
 
-# Euler2DCM
-def Euler2DCM(roll, pitch, yaw):
+# euler2DCM
+# Note: singular for pitch = +/- pi/2 (Gimbal lock)
+# Sequence: yaw-pitch-roll (3-2-1)
+def euler2DCM(roll, pitch, yaw):
     return Rz(yaw)@Ry(pitch)@Rx(roll)
+
+
+# euler2quat
+def euler2quat(roll, pitch, yaw):
+    return array([[cos(roll)*cos(pitch)*cos(yaw) + sin(roll)*sin(pitch)*sin(yaw)],
+                  [sin(roll)*cos(pitch)*cos(yaw) - cos(roll)*sin(pitch)*sin(yaw)],
+                  [cos(roll)*sin(pitch)*cos(yaw) + sin(roll)*cos(pitch)*sin(yaw)],
+                  [cos(roll)*cos(pitch)*sin(yaw) - sin(roll)*sin(pitch)*cos(yaw)]])
+
+
+# quat2euler
+def quat2euler(q):
+    roll = arctan2(2*(q[2, 0]*q[3, 0] + q[0, 0]*q[1, 0]), 1 - 2*(q[1, 0]**2 + q[2, 0]**2))
+    pitch = -arcsin(2*(q[1, 0]*q[3, 0] - q[0, 0]*q[2, 0]))
+    yaw = arctan2(2*(q[1, 0]*q[2, 0] + q[0, 0]*q[3, 0]), 1 - 2*(q[2, 0]**2 + q[3, 0]**2))
+    return roll, pitch, yaw
 
 
 # Skew matrix
@@ -100,10 +117,10 @@ def Cb_g(roll, pitch, yaw):
     return Rz(yaw)@Ry(pitch)@Rx(roll)
 
 
-# Estimate roll and pitch from acceleration (ned)
-def align(ax, ay, az):
-    roll = arctan2(ay/az)
-    pitch = arctan2(ax/az)
+# Estimate roll and pitch from ZUPT (ned)
+def acc2euler(ax, ay, az):
+    roll = arctan2(ay, az)
+    pitch = -arctan2(ax, sqrt(ay**2 + az**2))
     return roll, pitch
 
 
